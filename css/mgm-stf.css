@@ -1,0 +1,122 @@
+.entry-content {
+  max-width: none !important;
+}
+
+.stf2015-map-menu {
+  padding: 0;
+  margin: 0;
+  list-style-type: none;
+}
+
+.mgm_content_wrapper * {
+  font-weight: lighter;
+  letter-spacing: 0.02em;
+  color: #222222;
+}
+
+.mgm_content_wrapper h5 {
+  font-weight: lighter;
+  font-smoothing: antialiased;
+  -webkit-font-smoothing: antialiased;
+  margin-top: 0.5em;
+  margin-bottom: 0.3em;
+}
+
+.mgm_content_wrapper h5:first-child {
+  margin-top: 0.2em;
+}
+
+.stf2015-map-menu li {
+  cursor: pointer;
+}
+
+.stf2015-map-menu .map-menu-label {
+  display: inline-block;
+  margin-top: 2px;
+  margin-left: 12px;
+  height: 16px;
+  line-height:16px;
+  vertical-align: top;
+  font-weight: lighter;
+  letter-spacing: 0.02em;
+  color: #222222;
+}
+.stf2015-map-menu li:hover .map-menu-label,
+.stf2015-map-menu li.active .map-menu-label {
+  color: #F02626;
+}
+
+.stf2015-map-menu .map-menu-icon {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  background-image: url('../images/icons/map-menu-sprites.png');
+  background-position: 0 0;
+  background-repeat: no-repeat;
+  background-size: 112px 32px;
+}
+
+
+.stf2015-map-menu .stf2015-party .map-menu-icon {
+  background-position: 0 0;
+}
+
+.stf2015-map-menu .stf2015-sportshall .map-menu-icon {
+  background-position: -16px 0;
+}
+
+.stf2015-map-menu .stf2015-map .map-menu-icon {
+  background-position: -32px 0;
+}
+
+.stf2015-map-menu .stf2015-overlay .map-menu-icon {
+  background-position: -48px 0;
+}
+
+.stf2015-map-menu .stf2015-marathon .map-menu-icon {
+  background-position: -64px 0;
+}
+
+.stf2015-map-menu .stf2015-satellite .map-menu-icon {
+  background-position: -80px 0;
+}
+
+.stf2015-map-menu .stf2015-target .map-menu-icon {
+  background-position: -96px 0;
+}
+
+
+.stf2015-map-menu .stf2015-party:hover .map-menu-icon,
+.stf2015-map-menu .stf2015-party.active .map-menu-icon {
+  background-position: 0 -16px;
+}
+
+.stf2015-map-menu .stf2015-sportshall:hover .map-menu-icon,
+.stf2015-map-menu .stf2015-sportshall.active .map-menu-icon {
+  background-position: -16px -16px;
+}
+
+.stf2015-map-menu .stf2015-map:hover .map-menu-icon,
+.stf2015-map-menu .stf2015-map.active .map-menu-icon {
+  background-position: -32px -16px;
+}
+
+.stf2015-map-menu .stf2015-overlay:hover .map-menu-icon,
+.stf2015-map-menu .stf2015-overlay.active .map-menu-icon {
+  background-position: -48px -16px;
+}
+
+.stf2015-map-menu .stf2015-marathon:hover .map-menu-icon,
+.stf2015-map-menu .stf2015-marathon.active .map-menu-icon {
+  background-position: -64px -16px;
+}
+
+.stf2015-map-menu .stf2015-satellite:hover .map-menu-icon,
+.stf2015-map-menu .stf2015-satellite.active .map-menu-icon {
+  background-position: -80px -16px;
+}
+
+.stf2015-map-menu .stf2015-target:hover .map-menu-icon,
+.stf2015-map-menu .stf2015-target.active .map-menu-icon {
+  background-position: -96px -16px;
+}
