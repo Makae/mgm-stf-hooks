@@ -14,7 +14,7 @@
           var overlay_enabled = $this.attr('data-map-overlay') == 'true';
           var type = google.maps.MapTypeId[key];
           map.toggleOverlay(overlay_enabled);
-
+          map.setMapType(type);
           $this.siblings().filter('.option.active').removeClass('active');
           $this.addClass('active');
         });
