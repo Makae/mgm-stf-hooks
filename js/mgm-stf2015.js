@@ -18,7 +18,7 @@
       var map = _map;
       $('.stf2015-location-link a').each(function() {
         var config = JSON.parse(decodeURIComponent($(this).closest('.stf2015-location-link').attr('data-config')));
-        console.log(config);
+
         $(this).click(function(e) {
           if(get_params()['makae-map'].indexOf(config.mapid) != 0 ) {
             return;
@@ -72,7 +72,7 @@
 
     toggleLocation : function(map) {
       var self = this;
-      if(self.position_interval) {
+      var cleanPosition = function() {
         window.clearInterval(self.position_interval);
         self.position_interval = false;
         $('.mgm-stf-menu-position .stf2015-target').removeClass('active');
@@ -80,7 +80,10 @@
           map.removeGizmo(map.__location_marker);
           delete map.__location_marker;
         }
+      }
 
+      if(self.position_interval) {
+        cleanPosition();
         return;
       }
 
@@ -88,11 +91,11 @@
         $('.mgm-stf-menu-position .stf2015-target').addClass('active');
         self.position_interval = window.setInterval(function() {
           navigator.geolocation.getCurrentPosition($.proxy(self.updatePosition, self, map));
-        }, 1000);
+        }, 500);
       };
 
       var error = function() {
-
+        cleanPosition();
       };
 
       navigator.geolocation.getCurrentPosition(enable, error);
