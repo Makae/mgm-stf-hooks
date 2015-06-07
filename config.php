@@ -25,3 +25,9 @@ define('STF2015_LOCATION_CONFIG', serialize(array(
     )
   )
 )));
+
+define('STF2015_JS_CONFIG', serialize(array(
+  'bad_weather_text' => 'Diese Disziplin findet in der Turnhalle statt',
+  'bad_weather_active_default' => false,
+  'default_key' => '__DEFAULT__'
+)));

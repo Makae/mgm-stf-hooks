@@ -17,11 +17,9 @@
       var self = this;
       var map = _map;
       $('.stf2015-location-link a').each(function() {
-        debugger;
         var config = JSON.parse(decodeURIComponent($(this).closest('.stf2015-location-link').attr('data-config')));
         console.log(config);
         $(this).click(function(e) {
-          debugger;
           if(get_params()['makae-map'].indexOf(config.mapid) != 0 ) {
             return;
           } else {
@@ -129,6 +127,34 @@
     }
   };
 
+  var bad_weather = {
+
+    init : function() {
+      var self = this;
+      mgm.registerListener('mgm.content_manager.call.handler', function(e, data) {
+        var gizmo = data.gizmo;
+        var config = gizmo.mgm_map.instance_config;
+
+        if(data.gizmo.content_data.bad_weather_active && config._bad_weather_program)
+          return $.proxy(self.loadBadWeather, self);
+
+        return false;
+      });
+    },
+
+    loadBadWeather : function(gizmo, callback) {
+      var title = gizmo.name != '' ? gizmo.name : 'Schlechtwetterprogramm!';
+      var text = gizmo.content_data.bad_weather_text ;
+      if(text == mgm_stf_config.default_key)
+        text = mgm_stf_config.bad_weather_text;
+
+      var html = '<h5>' + title + '</h5>' +
+                 '<p>' + text + '</p>';
+      callback(html);
+    }
+
+  }
+
   var get_params = function () {
     // source http://stackoverflow.com/questions/979975/how-to-get-the-value-from-the-url-parameter
     // This function is anonymous, is executed immediately and
@@ -153,5 +179,12 @@
       return query_string;
   };
 
-  menu_links.init();
+  var init = function() {
+    bad_weather.init();
+    menu_links.init();
+  }
+  if(mgm)
+    init();
+  else
+    $(window).on('mgm.admin.loaded', init);
 })(jQuery);

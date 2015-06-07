@@ -63,10 +63,111 @@ function stf2015_hooks_make_menu() {
   return $html;
 }
 
+function stf2015_admin_enqueue_scripts() {
+  wp_enqueue_script('stf2015_admin', plugin_dir_url(__FILE__) . 'js/mgm-stf2015-admin.js', array('makae-gm_init'), 1, true);
+
+  $js_config = unserialize(STF2015_JS_CONFIG);
+  wp_localize_script('stf2015_admin', 'mgm_stf_config', $js_config);
+}
+
 function stf2015_enqueue_scripts() {
   wp_enqueue_style('stf2015', plugin_dir_url(__FILE__) . 'css/mgm-stf.css');
   wp_enqueue_script('stf2015', plugin_dir_url(__FILE__) . 'js/mgm-stf2015.js', array('makae-gm_init'), 1, true);
+
+  $js_config = unserialize(STF2015_JS_CONFIG);
+  wp_localize_script('stf2015', 'mgm_stf_config', $js_config);
+}
+
+function stf2015_add_metabox() {
+  add_meta_box(
+    'stf2015_bad_weather',
+    'Schlechtwetter Programm',
+    'stf2015_meta_box_callback',
+    'makae-map',
+    'side'
+  );
+}
+
+function stf2015_meta_box_callback( $post ) {
+
+  // Add a nonce field so we can check for it later.
+  wp_nonce_field('stf2015_bad_weather_meta_box', 'stf2015_bad_weather_meta_box_nonce');
+
+  /*
+   * Use get_post_meta() to retrieve an existing value
+   * from the database and use the value for the form.
+   */
+  $value = get_post_meta($post->ID, '_bad_weather_program', true );
+  $checked = $value == '1' ? ' checked="checked" ' : '';
+
+  echo '<input type="checkbox" id="stf2015_bad_weather_switch" name="stf2015_bad_weather_switch" ' . $checked . ' value="1" />';
+  echo '<label for="stf2015_bad_weather_switch"> Ja, leider schlecht Wetter </label> ';
+  echo '<input type="hidden" name="stf2015_bad_weather_switch_submitted" value="1" />';
+}
+
+function stf2015_save_meta_box_data( $post_id ) {
+
+  /*
+   * We need to verify this came from our screen and with proper authorization,
+   * because the save_post action can be triggered at other times.
+   */
+
+  // Check if our nonce is set.
+  if ( ! isset( $_POST['stf2015_bad_weather_meta_box_nonce'] ) ) {
+    return;
+  }
+
+  // Verify that the nonce is valid.
+  if ( ! wp_verify_nonce( $_POST['stf2015_bad_weather_meta_box_nonce'], 'stf2015_bad_weather_meta_box' ) ) {
+    return;
+  }
+
+  // If this is an autosave, our form has not been submitted, so we don't want to do anything.
+  if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+    return;
+  }
+
+  // Check the user's permissions.
+  if ( isset( $_POST['post_type'] ) && 'makae-map' == $_POST['post_type'] ) {
+
+    if ( ! current_user_can( 'edit_page', $post_id ) ) {
+      return;
+    }
+
+  } else {
+
+    if ( ! current_user_can( 'edit_post', $post_id ) ) {
+      return;
+    }
+  }
+
+  /* OK, it's safe for us to save the data now. */
+
+  // Make sure that it is set.
+  if ( ! isset( $_POST['stf2015_bad_weather_switch_submitted'] ) ) {
+    return;
+  }
+
+  // Sanitize user input.
+  $active = sanitize_text_field( $_POST['stf2015_bad_weather_switch'] );
+
+  $active = $active == '1';
+  // Update the meta field in the database.
+  update_post_meta($post_id, '_bad_weather_program', $active );
+}
+
+function stf2015_filter_map_config($config) {
+  $active = get_post_meta($config['id'], '_bad_weather_program', true);
+  $config['_bad_weather_program'] = ($active == '1') ? true : false;
+  return $config;
 }
 
 add_filter('makae_gm_menu_content', 'stf2015_hooks_make_menu');
 add_action('wp_enqueue_scripts', 'stf2015_enqueue_scripts');
+add_action('admin_enqueue_scripts', 'stf2015_admin_enqueue_scripts');
+
+// METABOX for Bad Weather
+add_action('add_meta_boxes', 'stf2015_add_metabox');
+add_action('save_post', 'stf2015_save_meta_box_data');
+
+add_filter('makae-gm-map-config', 'stf2015_filter_map_config');
