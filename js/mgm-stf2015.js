@@ -1,12 +1,45 @@
 (function($) {
   var menu_links = {
+
     position_interval : false,
-    init : function() {
+
+     init : function() {
       var self = this;
       $('.mgm_wrapper').each(function() {
         var map = mgm.getMap($(this).attr('data-map-idx'));
-        $('.mgm-stf-display-option-list .option').click(function() {
+        self.initOptions(map);
+        self.initLocations(map);
+        self.initPosition(map);
+      });
+    },
+
+    initLocations : function(_map) {
+      var self = this;
+      var map = _map;
+      $('.stf2015-location-link a').each(function() {
+        debugger;
+        var config = JSON.parse(decodeURIComponent($(this).closest('.stf2015-location-link').attr('data-config')));
+        console.log(config);
+        $(this).click(function(e) {
+          debugger;
+          if(get_params()['makae-map'].indexOf(config.mapid) != 0 ) {
+            return;
+          } else {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+          }
+
+          map.scrollPan(config.coords.latitude, config.coords.longitude);
+        });
+      });
+
+    },
+
+    initOptions : function(_map) {
+      var map = _map;
+      $('.mgm-stf-display-option-list .option').click(function() {
           $this = $(this);
+
           if($this.hasClass('active'))
             return;
 
@@ -18,18 +51,25 @@
           $this.siblings().filter('.option.active').removeClass('active');
           $this.addClass('active');
         });
-
-        self.initPosition(map);
-      });
     },
 
-    initPosition : function(map) {
+    initPosition : function(_map) {
+      var map = _map;
+      var params = get_params();
+      if(params['lat'] && params['lng'])
+        map.scrollPan(params['lat'], params['lng'])
+
       if(!navigator.geolocation) {
         $('.mgm-stf-position-wrapper').remove();
         return;
       }
 
       $('.mgm-stf-menu-position .stf2015-target').click($.proxy(this.toggleLocation, this, map));
+
+    },
+
+    isCurrentSite : function(map_id) {
+      return window.location.href.indexOf("makae-map=" + map_id)
     },
 
     toggleLocation : function(map) {
@@ -87,7 +127,31 @@
       map.scrollPan(position.coords.latitude, position.coords.longitude);
 
     }
-  }
+  };
+
+  var get_params = function () {
+    // source http://stackoverflow.com/questions/979975/how-to-get-the-value-from-the-url-parameter
+    // This function is anonymous, is executed immediately and
+    // the return value is assigned to QueryString!
+    var query_string = {};
+    var query = window.location.search.substring(1);
+    var vars = query.split("&");
+    for (var i=0;i<vars.length;i++) {
+      var pair = vars[i].split("=");
+          // If first entry with this name
+      if (typeof query_string[pair[0]] === "undefined") {
+        query_string[pair[0]] = pair[1];
+          // If second entry with this name
+      } else if (typeof query_string[pair[0]] === "string") {
+        var arr = [ query_string[pair[0]], pair[1] ];
+        query_string[pair[0]] = arr;
+          // If third or later entry with this name
+      } else {
+        query_string[pair[0]].push(pair[1]);
+      }
+    }
+      return query_string;
+  };
 
   menu_links.init();
 })(jQuery);
