@@ -14,6 +14,11 @@
   color: #222222;
 }
 
+body .mgm_content_wrapper strong,
+body .mgm_content_wrapper b {
+  font-weight: bold;
+}
+
 .mgm_content_wrapper h5 {
   font-weight: lighter;
   font-smoothing: antialiased;
@@ -55,6 +60,53 @@
   background-repeat: no-repeat;
   background-size: 112px 32px;
 }
+
+
+.mgm-wrapper-message {
+  z-index: 10000;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 0px;
+  width: 100%;
+  overflow: visible;
+  text-align: center;
+}
+
+.mgm-wrapper-message .msg-wrapper {
+  display:inline-block;
+  padding: 14px 20px;
+
+  background-color: rgba(255,255,255,0);
+  -webkit-transform:translate3d(0, -100%, 0);
+  -moz-transform:translate3d(0, -100%, 0);
+  -ms-transform:translate3d(0, -100%, 0);
+  transform:translate3d(0, -100%, 0);
+}
+
+.mgm-wrapper-message.active .msg-wrapper {
+  background-color: rgba(255,255,255,0.9);
+  -webkit-transform:translate3d(0, 0, 0);
+  -moz-transform:translate3d(0, 0, 0);
+  -ms-transform:translate3d(0, 0, 0);
+  transform:translate3d(0, 0, 0);
+}
+
+.mgm-wrapper-message span {
+  display: inline-block;
+  vertical-align: middle;
+}
+.mgm-wrapper-message.error span.message-icon {
+  display: inline-block;
+  content: " ";
+  height: 2em;
+  width: 2em;
+  margin-right: 8px;
+  background-size: 2em 2em;
+  background-repeat: no-repeat;
+  background-image: url('../images/icons/Connectivity-Error-48.png');
+}
+
 
 
 .stf2015-map-menu .stf2015-party .map-menu-icon {

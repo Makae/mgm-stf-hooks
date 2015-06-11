@@ -3,7 +3,7 @@
 
     position_interval : false,
 
-     init : function() {
+    init : function() {
       var self = this;
       $('.mgm_wrapper').each(function() {
         var map = mgm.getMap($(this).attr('data-map-idx'));
@@ -34,6 +34,7 @@
     },
 
     initOptions : function(_map) {
+      var self = this;
       var map = _map;
       $('.mgm-stf-display-option-list .option').click(function() {
           $this = $(this);
@@ -52,6 +53,7 @@
     },
 
     initPosition : function(_map) {
+      var self = this;
       var map = _map;
       var params = get_params();
       if(params['lat'] && params['lng'])
@@ -72,33 +74,49 @@
 
     toggleLocation : function(map) {
       var self = this;
-      var cleanPosition = function() {
-        window.clearInterval(self.position_interval);
-        self.position_interval = false;
-        $('.mgm-stf-menu-position .stf2015-target').removeClass('active');
-        if(map.__location_marker) {
-          map.removeGizmo(map.__location_marker);
-          delete map.__location_marker;
-        }
-      }
 
       if(self.position_interval) {
-        cleanPosition();
+        self.cleanPosition(map);
         return;
       }
 
-      var enable = function() {
+      var enable = function(position) {
+        self.updatePosition(map, position);
         $('.mgm-stf-menu-position .stf2015-target').addClass('active');
         self.position_interval = window.setInterval(function() {
-          navigator.geolocation.getCurrentPosition($.proxy(self.updatePosition, self, map));
+          navigator.geolocation.getCurrentPosition($.proxy(self.updatePosition, self, map), $.proxy(self.handleError, self, map));
         }, 500);
       };
 
-      var error = function() {
-        cleanPosition();
+      var error = function(e, map) {
+        self.showError(e, map);
+        self.cleanPosition(map);
       };
 
       navigator.geolocation.getCurrentPosition(enable, error);
+    },
+
+    showError : function(e, map) {
+      var $msg = $("<div class='mgm-wrapper-message error'><div class='msg-wrapper stdanimation'><span class='message-icon'></span><span>GPS nicht aktiviert</span></div></div>");
+      $('.mgm_wrapper').prepend($msg);
+
+      setTimeout(function() {
+        $('.mgm_wrapper .mgm-wrapper-message').addClass('active');
+        setTimeout(function() {
+          $('.mgm_wrapper .mgm-wrapper-message').removeClass('active');
+        },2500);
+      }, 250);
+    },
+
+    cleanPosition : function(map) {
+      var self = this;
+      window.clearInterval(self.position_interval);
+      self.position_interval = false;
+      $('.mgm-stf-menu-position .stf2015-target').removeClass('active');
+      if(map.__location_marker) {
+        map.removeGizmo(map.__location_marker);
+        delete map.__location_marker;
+      }
     },
 
     updatePosition : function(map, position) {
@@ -131,7 +149,6 @@
   };
 
   var bad_weather = {
-
     init : function() {
       var self = this;
       mgm.registerListener('mgm.content_manager.call.handler', function(e, data) {

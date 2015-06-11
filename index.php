@@ -42,9 +42,9 @@ function stf2015_hooks_make_menu() {
   $html .=
     '<h5>' . __('Kartentyp', 'mgm-stf2015') . '</h5>' .
     '<ul class="mgm-stf-display-option-list stf2015-map-menu">' .
-      '<li class="option stf2015-overlay active" data-map-type-key="ROADMAP" data-map-overlay="true"><span class="map-menu-icon"></span><span class="map-menu-label">' . __('Overlay', 'mgm-stf2015') . '</span></li>' .
-      '<li class="option stf2015-map" data-map-type-key="ROADMAP" data-map-overlay="false"><span class="map-menu-icon"></span><span class="map-menu-label">' . __('Map', 'mgm-stf2015') . '</span></li>' .
-      '<li class="option stf2015-satellite" data-map-type-key="SATELLITE" data-map-overlay="false"><span class="map-menu-icon"></span><span class="map-menu-label">' . __('Satellite', 'mgm-stf2015') . '</span></li>' .
+      '<li class="option stf2015-overlay active" data-map-type-key="ROADMAP" data-map-overlay="true"><span class="map-menu-icon"></span><span class="map-menu-label">' . __('Lageplan', 'mgm-stf2015') . '</span></li>' .
+      '<li class="option stf2015-map" data-map-type-key="ROADMAP" data-map-overlay="false"><span class="map-menu-icon"></span><span class="map-menu-label">' . __('Karte', 'mgm-stf2015') . '</span></li>' .
+      '<li class="option stf2015-satellite" data-map-type-key="SATELLITE" data-map-overlay="false"><span class="map-menu-icon"></span><span class="map-menu-label">' . __('Satellit', 'mgm-stf2015') . '</span></li>' .
     '</ul>';
 
   $html .=
