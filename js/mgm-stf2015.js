@@ -97,7 +97,7 @@
     },
 
     showError : function(e, map) {
-      var $msg = $("<div class='mgm-wrapper-message error'><div class='msg-wrapper stdanimation'><span class='message-icon'></span><span>GPS nicht aktiviert</span></div></div>");
+      var $msg = $("<div class='mgm-wrapper-message error'><div class='msg-wrapper stdanimation light-shadow-bottom'><span class='message-icon'></span><span>GPS nicht aktiviert</span></div></div>");
       $('.mgm_wrapper').prepend($msg);
 
       setTimeout(function() {
